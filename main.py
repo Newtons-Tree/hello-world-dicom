@@ -28,16 +28,14 @@ def process_dicom(input_dir: str, output_dir: str) -> None:
     # Create the output directory
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-    print(f"Loading files in {input_dir}:")
-    # For each file in the input directory
-    for file_path in Path(input_dir).iterdir():
-        # Skip non-DICOM files, and subdirectories
-        if not file_path.name.lower().endswith(".dcm"):
-            print(f"Skipping {file_path}")
-            continue
+    print(f"Loading files in {input_dir} recursively:")
+    p = Path(input_dir)
 
+    # Recursively find .dcm files
+    for dcm_file in p.glob("**/**.dcm"):
+        print(f"Processing {dcm_file.name}")
         # Load the DICOM file
-        ds: FileDataset = pydicom.dcmread(str(file_path))
+        ds: FileDataset = pydicom.dcmread(str(dcm_file))
 
         # Update image comments tag
         ds.ImageComments = "Touched by AI"
@@ -48,9 +46,10 @@ def process_dicom(input_dir: str, output_dir: str) -> None:
         ds.ContentTime = dt.strftime("%H%M%S.%f")
 
         # Save the updated DICOM file
-        out_path = Path(output_dir) / file_path.name
+        # Note this will not respect original subfolder hierarchy, if present
+        # Note this will not respect duplicate file names, if present
+        out_path = Path(output_dir) / dcm_file.name
         ds.save_as(str(out_path))
-        print(f"Processed: {file_path.name}")
 
 
 # Main function

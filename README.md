@@ -10,7 +10,7 @@ title: main.py logic
 ---
 flowchart TD
   read["read input_dir"]
-  scan["check for .dcm files (ignore subdirectories)"]
+  scan["check for .dcm files (recursively)"]
   process["process dicom files"]
   write["save dicom files to output_dir"]
   read --> scan --> process -->write
@@ -23,7 +23,7 @@ See [Dockerfile](Dockerfile).
 ## 2. Build your container
 
 ```bash
-version=0.2.3
+version=0.2.4
 docker build -t hello-world:$version .
 ```
 
@@ -42,4 +42,4 @@ docker run --rm \
   hello-world:$version
 ```
 
-In a deployment, the Newton's Tree Platform will receive and mount DICOM files to the required mount paths (`/data/in` in this example.)
+In a deployment, the Newton's Tree Platform will receive and mount DICOM files to the required mount paths (`/data/in` in this example). ℹ️ Note these may include nested folders.
