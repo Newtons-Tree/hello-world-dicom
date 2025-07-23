@@ -11,12 +11,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the script to the container working directory
 COPY main.py .
 
-# Ensure /tmp exists with correct permissions
-RUN mkdir -p /tmp && chmod 1777 /tmp
+# Ensure /data exists with correct permissions
+RUN mkdir -p /data/in /data/out
+RUN chown -R 999:999 /data
+
+# Switch to a non-privileged user:group
+USER 999:999
 
 # Command to execute
-# Containers run without root privileges, so we use
-# the /tmp path within the container to prevent issues
-# with permissions. For local testing, these paths are
-# mapped onto the local filesystem during the run command.
-CMD ["python", "main.py", "/tmp/in", "/tmp/out"]
+# For local testing, these paths are mapped
+# onto the local filesystem during the run command.
+CMD ["python", "main.py", "/data/in", "/data/out"]

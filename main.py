@@ -17,7 +17,7 @@ def log_gpu_info() -> None:
         print("CUDA is not available. Running on CPU.")
 
 
-def touch_dicom(input_dir: str, output_dir: str) -> None:
+def process_dicom(input_dir: str, output_dir: str) -> None:
     """Add a DICOM tag for demonstration purposes.
 
     Args:
@@ -63,4 +63,4 @@ if __name__ == "__main__":
     output_dir = sys.argv[2]
 
     log_gpu_info()
-    touch_dicom(input_dir, output_dir)
+    process_dicom(input_dir, output_dir)
