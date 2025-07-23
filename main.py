@@ -32,7 +32,7 @@ def process_dicom(input_dir: str, output_dir: str) -> None:
     p = Path(input_dir)
 
     # Recursively find .dcm files
-    for dcm_file in p.glob("**/**.dcm"):
+    for dcm_file in p.glob("**/*.dcm"):
         print(f"Processing {dcm_file.name}")
         # Load the DICOM file
         ds: FileDataset = pydicom.dcmread(str(dcm_file))
