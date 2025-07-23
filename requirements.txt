@@ -1,0 +1,2 @@
+pydicom==3.0.1
+# torch==2.7.1 # pre-installed in base image
